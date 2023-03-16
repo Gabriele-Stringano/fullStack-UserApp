@@ -1,8 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-//const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 //const helmet = require("helmet");
-//const connectionDB = require("./database");
+const connectionDB = require("./database");
 
 const app = express()
 
@@ -19,10 +19,10 @@ app.use(express.json())
 app.get("/", (req, res) => {
     res
         .status(200)
-        .json({ message: "Hi fam" });
+        .json({ message: "Home" });
 });
 
-app.post('/posts', verifyToken, (req, res) => {
+app.post('/dashboard', verifyToken, (req, res) => {
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err){
             res.status(403)
@@ -59,7 +59,6 @@ app.get("*", (req, res) => {
     res.status(404).json({ message: "404 Not Found" });
 });
 
-//FORMAT TOKEN
 
 //verifyToken Function
 function verifyToken(req, res, next) {
@@ -81,6 +80,6 @@ function verifyToken(req, res, next) {
     }
 }
 
-app.listen(5000, () => { console.log('server started') })
-/*connectionDB().then((result) => app.listen(process.env.PORT || 5000 , () => console.log ('server up')))
-.catch(err => console.log('connection error' + err))*/
+
+connectionDB().then((result) => app.listen(process.env.PORT || 5000 , () => console.log ('server up')))
+.catch(err => console.log('connection error' + err))
