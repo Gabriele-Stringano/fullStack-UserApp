@@ -4,6 +4,8 @@ const mongoose = require('mongoose')
 //const helmet = require("helmet");
 const connectionDB = require("./database");
 
+const authRoutes = require('./routes/authRoutes')
+
 const app = express()
 
 //express.json() parses incoming JSON requests and puts the parsed data in req.body
@@ -37,7 +39,7 @@ app.post('/dashboard', verifyToken, (req, res) => {
     })
 })
 
-app.post('/login', (req, res) => {
+/*app.post('/login', (req, res) => {
 
     //devi preparare il processo di autenticazione che restituisce poi l'user
     const user = {
@@ -52,7 +54,9 @@ app.post('/login', (req, res) => {
             token
         })
     });
-});
+});*/
+
+app.use('/api', authRoutes);
 
 // error 404
 app.get("*", (req, res) => {
