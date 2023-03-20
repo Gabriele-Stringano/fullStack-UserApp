@@ -23,13 +23,25 @@ export function SignupPage() {
         setIsChecked(!isChecked);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit =  async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const formData = new FormData(event.currentTarget);
+        try{
+            const res = await fetch("/api/signup", {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: formData.get('email'),
+                    password: formData.get('password')
+                }),
+                headers: {'Content-Type' : 'application/json'}
+            });
+            const data = await res.json();
+            if(data.errors){
+
+            }
+        }catch(e){
+            console.log(e);
+        }
     };
 
     return (

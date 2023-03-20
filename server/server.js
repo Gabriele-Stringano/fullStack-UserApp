@@ -3,13 +3,16 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose')
 //const helmet = require("helmet");
 const connectionDB = require("./database");
+const cookieParser = require('cookie-parser');
 
-const authRoutes = require('./routes/authRoutes')
+const authRoutes = require('./routes/authRoutes');
 
 const app = express()
 
+//middlewares
 //express.json() parses incoming JSON requests and puts the parsed data in req.body
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
 
 //Helmet helps you secure your Express apps by setting various HTTP headers
 //app.use(helmet());
@@ -26,10 +29,10 @@ app.get("/", (req, res) => {
 
 app.post('/dashboard', verifyToken, (req, res) => {
     jwt.verify(req.token, 'secretkey', (err, authData) => {
-        if(err){
+        if (err) {
             res.status(403)
         }
-        else{
+        else {
             res.json({
                 message: 'success...',
                 //authData sono le informazioni di user, comode da salvare in redux
@@ -39,22 +42,6 @@ app.post('/dashboard', verifyToken, (req, res) => {
     })
 })
 
-/*app.post('/login', (req, res) => {
-
-    //devi preparare il processo di autenticazione che restituisce poi l'user
-    const user = {
-        id: 1,
-        username: 'bob',
-        email: 'dkcv'
-    }
-
-    //in caso di successo provvediamo con la creazione del token che va salvato in un LOCAL STORE
-    const key = jwt.sign({ user: user }, 'secretkey', {expiresIn: '1h'}, (err, token) => {
-        res.json({
-            token
-        })
-    });
-});*/
 
 app.use('/api', authRoutes);
 
@@ -85,5 +72,5 @@ function verifyToken(req, res, next) {
 }
 
 
-connectionDB().then((result) => app.listen(process.env.PORT || 5000 , () => console.log ('server up')))
-.catch(err => console.log('connection error' + err))
+connectionDB().then((result) => app.listen(process.env.PORT || 5000, () => console.log('server up')))
+    .catch(err => console.log('connection error' + err))
