@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -11,36 +11,51 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import   {useState}  from "react";
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 const theme = createTheme();
 
 export function SignupPage() {
     //state
     const [isChecked, setIsChecked] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
+
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
     };
 
-    const handleSubmit =  async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
+        setErrors({});
         const formData = new FormData(event.currentTarget);
-        try{
+        try {
             const res = await fetch("/api/signup", {
                 method: 'POST',
                 body: JSON.stringify({
                     email: formData.get('email'),
                     password: formData.get('password')
                 }),
-                headers: {'Content-Type' : 'application/json'}
+                headers: { 'Content-Type': 'application/json' }
             });
             const data = await res.json();
-            if(data.errors){
-
-            }
-        }catch(e){
+            fetchResult(data);
+        } catch (e) {
             console.log(e);
+        }
+    };
+
+    const fetchResult = (data) => {
+        if (data.errors) {
+            setLoading(false);
+            setErrors(data.errors);
+            console.log(data.errors)
+        } if (data.user) {
+            return navigate('/');
         }
     };
 
@@ -83,6 +98,8 @@ export function SignupPage() {
                                     name="email"
                                     autoComplete="email"
                                     type="email"
+                                    error={Boolean(errors.email)} // aggiungi la proprietà error al campo email
+                                    helperText={errors.email} // mostra il messaggio di errore in base alla proprietà error
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -94,24 +111,28 @@ export function SignupPage() {
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
+                                    error={Boolean(errors.password)} // aggiungi la proprietà error al campo password
+                                    helperText={errors.password} // mostra il messaggio di errore in base alla proprietà error
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <FormControlLabel
-                                    control={<Checkbox checked={isChecked} onChange={handleCheckboxChange} color="primary"/>}
+                                    control={<Checkbox checked={isChecked} onChange={handleCheckboxChange} color="primary" />}
                                     label="I am fully aware that this website is for testing purposes only, and it is crucial that I do not share any personal information under any circumstances."
                                 />
                             </Grid>
                         </Grid>
-                        <Button
+                        <LoadingButton
                             type="submit"
                             fullWidth
                             variant="contained"
                             disabled={!isChecked}
+                            loading={loading}
+                            loadingIndicator="Loading…"
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign Up
-                        </Button>
+                        </LoadingButton>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link to='/login' >
