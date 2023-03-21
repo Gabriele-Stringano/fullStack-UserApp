@@ -59,6 +59,7 @@ module.exports.signup_post = async (req, res) => {
         res.status(400).json({ errors });
     }
 }
+
 module.exports.login_post = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -72,3 +73,24 @@ module.exports.login_post = async (req, res) => {
         res.status(400).json({ errors });
     }
 }
+
+module.exports.requireAuth_get = async (req, res) => {
+    let result= {error: '', token: ''};
+    //grab the token form the browser (client)
+    const token = req.cookies.jwt;
+    //check if the token was grabbed
+    if (token) {
+        jwt.verify(token, 'f_w3fwvapc jodf!cj_3sgg', (err, decodedToken) => {
+          if (err) {
+            result.error= err;
+            res.status(400).json({result});
+          } else {
+            result.token= token;
+            res.status(200).json({result});
+          }
+        });
+      } else {
+        result.error= 'token jwt not found';
+        res.status(400).json({result});
+      }
+    };

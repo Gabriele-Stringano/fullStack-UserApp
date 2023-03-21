@@ -8,6 +8,7 @@ import { SignupPage } from './components/signup/SignupPage';
 import { LoginPage } from './components/login/LoginPage';
 import ButtonAppBar from './components/layouts/ButtonAppBar';
 import { Footer } from './components/layouts/Footer';
+import { HomePage } from './components/HomePage';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <ButtonAppBar />
         <Routes className={'page'}>
           <Route exact path='/' element={
-            <div>HOME</div>
+            <HomePage />
           } />
 
           <Route exact path='/login' element={
@@ -24,6 +25,9 @@ function App() {
           } />
           <Route exact path='/signup' element={
             <SignupPage />
+          } />
+          <Route exact path='/dashboard' element={
+            <h1>DASH BOARD</h1>
           } />
         </Routes>
         <Footer />
