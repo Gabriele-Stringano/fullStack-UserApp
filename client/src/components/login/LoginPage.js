@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -11,18 +11,46 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
 const theme = createTheme();
 
 export function LoginPage() {
-    const handleSubmit = (event) => {
+
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        setLoading(true);
+        setErrors({});
+        const formData = new FormData(event.currentTarget);
+        try {
+            const res = await fetch("/api/login", {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: formData.get('email'),
+                    password: formData.get('password')
+                }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await res.json();
+            checkResult(data);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    const checkResult = (data) => {
+        if (data.errors) {
+            setLoading(false);
+            setErrors(data.errors);
+            console.log(data.errors)
+        } if (data.user) {
+            return navigate('/');
+        }
     };
 
     return (
@@ -54,6 +82,8 @@ export function LoginPage() {
                             autoComplete="email"
                             autoFocus
                             type="email"
+                            error={Boolean(errors.email)} // check for an error
+                            helperText={errors.email} // show error message
                         />
                         <TextField
                             margin="normal"
@@ -64,19 +94,23 @@ export function LoginPage() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            error={Boolean(errors.password)} // check for an error
+                            helperText={errors.password} // show error message
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
-                        <Button
+                        <LoadingButton
                             type="submit"
                             fullWidth
                             variant="contained"
+                            loading={loading}
+                            loadingIndicator="Loading…"
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign In
-                        </Button>
+                        </LoadingButton>
                         <Grid container>
                             <Grid item xs>
                                 <Link>

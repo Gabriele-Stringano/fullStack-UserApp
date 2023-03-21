@@ -43,13 +43,13 @@ export function SignupPage() {
                 headers: { 'Content-Type': 'application/json' }
             });
             const data = await res.json();
-            fetchResult(data);
+            checkResult(data);
         } catch (e) {
             console.log(e);
         }
     };
 
-    const fetchResult = (data) => {
+    const checkResult = (data) => {
         if (data.errors) {
             setLoading(false);
             setErrors(data.errors);
@@ -98,8 +98,8 @@ export function SignupPage() {
                                     name="email"
                                     autoComplete="email"
                                     type="email"
-                                    error={Boolean(errors.email)} // aggiungi la proprietà error al campo email
-                                    helperText={errors.email} // mostra il messaggio di errore in base alla proprietà error
+                                    error={Boolean(errors.email)} // check for an error
+                                    helperText={errors.email} // show error message
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -111,8 +111,8 @@ export function SignupPage() {
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
-                                    error={Boolean(errors.password)} // aggiungi la proprietà error al campo password
-                                    helperText={errors.password} // mostra il messaggio di errore in base alla proprietà error
+                                    error={Boolean(errors.password)} // check for an error
+                                    helperText={errors.password} // show error message
                                 />
                             </Grid>
                             <Grid item xs={12}>
