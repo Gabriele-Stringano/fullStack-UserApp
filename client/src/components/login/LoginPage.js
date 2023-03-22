@@ -49,6 +49,7 @@ export function LoginPage() {
             setErrors(data.errors);
             console.log(data.errors)
         } if (data.user) {
+            sessionStorage.setItem('user', data.user);
             return navigate('/');
         }
     };

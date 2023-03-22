@@ -55,6 +55,7 @@ export function SignupPage() {
             setErrors(data.errors);
             console.log(data.errors)
         } if (data.user) {
+            sessionStorage.setItem('user', data.user);
             return navigate('/');
         }
     };

@@ -52,7 +52,7 @@ module.exports.signup_post = async (req, res) => {
         //token creation
         const token = createToken(user._id);
         //cookie creation e sending to browser
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.cookie('jwt', token, { httpOnly: true });
         res.status(201).json({ user: user._id });
     } catch (err) {
         const errors = handleErrors(err);
@@ -66,7 +66,7 @@ module.exports.login_post = async (req, res) => {
         //User.login is a static method created in models/users.js
         const user = await User.login(email, password)
         const token = createToken(user._id);
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.cookie('jwt', token, { httpOnly: true });
         res.status(200).json({ user: user._id });
     } catch (err) {
         const errors = handleErrors(err);

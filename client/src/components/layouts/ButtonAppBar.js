@@ -7,19 +7,38 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 
 export default function ButtonAppBar() {
-
+  const [authenticated, setAuthenticated] = React.useState(
+    Boolean(sessionStorage.getItem('user'))
+  );
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = async () => {
+    sessionStorage.removeItem('user');
+    setAuthenticated(false);
+      await fetch("/api/logout", {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+  });
+    return navigate('/login');
+  };
+
+  React.useEffect(() => {
+    setAuthenticated(Boolean(sessionStorage.getItem('user')));
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -57,25 +76,28 @@ export default function ButtonAppBar() {
               FullStack-UserApp
             </Link>
           </Typography>
-          <Button color="inherit"
-            //put a function that call /api/logout
-            sx={{ mr: 2 }}
-          >
-            prova
-          </Button>
-          <Button color="inherit"
-            component={Link}
-            to={'/login'}
-            sx={{ mr: 2 }}
-          >
-            Login
-          </Button>
-          <Button color="inherit"
-            component={Link}
-            to={'/signup'}
-          >
-            SignUp
-          </Button>
+          {authenticated
+            ? <Button color="inherit"
+            onClick={handleLogout}
+              sx={{ mr: 2 }}
+            >
+              Logout
+            </Button>
+            : <>
+              <Button color="inherit"
+                component={Link}
+                to={'/login'}
+                sx={{ mr: 2 }}
+              >
+                Login
+              </Button>
+              <Button color="inherit"
+                component={Link}
+                to={'/signup'}
+              >
+                SignUp
+              </Button> </>
+          }
         </Toolbar>
       </AppBar>
     </Box>
