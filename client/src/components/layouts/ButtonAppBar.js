@@ -58,6 +58,12 @@ export default function ButtonAppBar() {
             </Link>
           </Typography>
           <Button color="inherit"
+            //put a function that call /api/logout
+            sx={{ mr: 2 }}
+          >
+            prova
+          </Button>
+          <Button color="inherit"
             component={Link}
             to={'/login'}
             sx={{ mr: 2 }}
