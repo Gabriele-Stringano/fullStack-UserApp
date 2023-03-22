@@ -9,6 +9,7 @@ import { LoginPage } from './components/login/LoginPage';
 import ButtonAppBar from './components/layouts/ButtonAppBar';
 import { Footer } from './components/layouts/Footer';
 import { HomePage } from './components/HomePage';
+import ProtectedRoutes from './ProtectedRoutes';
 
 function App() {
   return (
@@ -26,9 +27,11 @@ function App() {
           <Route exact path='/signup' element={
             <SignupPage />
           } />
-          <Route exact path='/dashboard' element={
-            <h1>DASH BOARD</h1>
-          } />
+          <Route element={<ProtectedRoutes />}>
+            <Route exact path='/dashboard' element={
+              <h1>DASH BOARD</h1>
+            } />
+          </Route>
         </Routes>
         <Footer />
       </div>
