@@ -14,6 +14,7 @@ import { LoginPage } from './components/authPages/LoginPage';
 import ButtonAppBar from './components/layouts/ButtonAppBar';
 import { Footer } from './components/layouts/Footer';
 import { HomePage } from './components/HomePage';
+import DashBoard from './components/DashBoard';
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
             } />
             <Route element={<ProtectedRoutes />}>
               <Route exact path='/dashboard' element={
-                <h1>DASH BOARD</h1>
+                <DashBoard/>
               } />
             </Route>
           </Routes>

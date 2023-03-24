@@ -14,16 +14,16 @@ import { setAuthenticated } from '../../actions/userAuthAction';
 
 export default function ButtonAppBar() {
 
-//Component state
-  const isAuthenticated = useSelector((state) =>  state.userAuth.isLogged)
+  //Component state
+  const isAuthenticated = useSelector((state) => state.userAuth.isLogged)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-//utils
+  //utils
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-//appBar clickMenu
+  //appBar clickMenu
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -39,10 +39,10 @@ export default function ButtonAppBar() {
   const handleLogout = async () => {
     sessionStorage.removeItem('user');
     dispatch(setAuthenticated(false));
-      await fetch("/api/logout", {
+    await fetch("/api/logout", {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
-  });
+    });
     return navigate('/login');
   };
 
@@ -73,8 +73,16 @@ export default function ButtonAppBar() {
             }}
           >
             <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={handleClose}>My dashboard</MenuItem>
+            {isAuthenticated
+              ? <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              : <MenuItem
+                component={Link}
+                to={'/login'}
+              >
+                Login
+              </MenuItem>
+            }
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}
           >
@@ -84,7 +92,7 @@ export default function ButtonAppBar() {
           </Typography>
           {isAuthenticated
             ? <Button color="inherit"
-            onClick={handleLogout}
+              onClick={handleLogout}
               sx={{ mr: 2 }}
             >
               Logout
