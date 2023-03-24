@@ -13,6 +13,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { setAuthenticated } from '../../actions/userAuthAction';
 
 const theme = createTheme();
 
@@ -21,6 +23,7 @@ export function LoginPage() {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -50,6 +53,7 @@ export function LoginPage() {
             console.log(data.errors)
         } if (data.user) {
             sessionStorage.setItem('user', data.user);
+            dispatch(setAuthenticated(true));
             return navigate('/');
         }
     };

@@ -9,8 +9,8 @@ import { Provider } from 'react-redux';
 import store from './store'
 
 //import other components e styleDocumets
-import { SignupPage } from './components/signup/SignupPage';
-import { LoginPage } from './components/login/LoginPage';
+import { SignupPage } from './components/authPages/SignupPage';
+import { LoginPage } from './components/authPages/LoginPage';
 import ButtonAppBar from './components/layouts/ButtonAppBar';
 import { Footer } from './components/layouts/Footer';
 import { HomePage } from './components/HomePage';

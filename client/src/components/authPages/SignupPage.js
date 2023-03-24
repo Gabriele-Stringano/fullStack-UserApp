@@ -13,6 +13,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
+import { setAuthenticated } from '../../actions/userAuthAction';
+import { useDispatch } from 'react-redux';
+
 const theme = createTheme();
 
 export function SignupPage() {
@@ -20,6 +23,7 @@ export function SignupPage() {
     const [isChecked, setIsChecked] = useState(false);
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -57,6 +61,7 @@ export function SignupPage() {
         } if (data.user) {
             //save user id in the browser
             sessionStorage.setItem('user', data.user);
+            dispatch(setAuthenticated(true));
             return navigate('/');
         }
     };

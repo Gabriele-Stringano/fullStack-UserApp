@@ -9,36 +9,42 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux'
+import { setAuthenticated } from '../../actions/userAuthAction';
 
 export default function ButtonAppBar() {
-  const [authenticated, setAuthenticated] = React.useState(
-    Boolean(sessionStorage.getItem('user'))
-  );
+
+//Component state
+  const isAuthenticated = useSelector((state) =>  state.userAuth.isLogged)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const navigate = useNavigate();
 
+//utils
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+//appBar clickMenu
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  React.useEffect(() => {
+    dispatch(setAuthenticated(Boolean(sessionStorage.getItem('user'))));
+  }, [dispatch,]);
+
+  //Logout button event
   const handleLogout = async () => {
     sessionStorage.removeItem('user');
-    setAuthenticated(false);
+    dispatch(setAuthenticated(false));
       await fetch("/api/logout", {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
   });
     return navigate('/login');
   };
-
-  React.useEffect(() => {
-    setAuthenticated(Boolean(sessionStorage.getItem('user')));
-  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -76,7 +82,7 @@ export default function ButtonAppBar() {
               FullStack-UserApp
             </Link>
           </Typography>
-          {authenticated
+          {isAuthenticated
             ? <Button color="inherit"
             onClick={handleLogout}
               sx={{ mr: 2 }}
