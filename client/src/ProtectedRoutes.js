@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import {checkAuth} from './utils/AuthUtils'
 
 const useAuthCheck = () => {
-  const checkAuth = async () => {
-    try {
-      const res = await fetch("/api/checkAuth", {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const data = await res.json();
-      return data.result.authorised;
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const [isAuth, setIsAuth] = useState(null);
 

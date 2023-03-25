@@ -35,7 +35,10 @@ function App() {
             } />
             <Route element={<ProtectedRoutes />}>
               <Route exact path='/dashboard' element={
-                <DashBoard/>
+                <DashBoard />
+              } />
+              <Route exact path='/profile' element={
+                <div> my profile</div>
               } />
             </Route>
           </Routes>

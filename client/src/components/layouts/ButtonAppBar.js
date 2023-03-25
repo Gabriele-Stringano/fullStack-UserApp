@@ -11,15 +11,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux'
 import { setAuthenticated } from '../../actions/userAuthAction';
+import {logout} from '../../utils/AuthUtils'
 
 export default function ButtonAppBar() {
 
-  //Component state
+  // Component state
   const isAuthenticated = useSelector((state) => state.userAuth.isLogged)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  //utils
+  // Utils
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,17 +34,18 @@ export default function ButtonAppBar() {
 
   React.useEffect(() => {
     dispatch(setAuthenticated(Boolean(sessionStorage.getItem('user'))));
-  }, [dispatch,]);
+    // Utilized to resolve a bug found in the Brave browser.
+    if(!Boolean(sessionStorage.getItem('user'))){
+      navigate(logout());
+    }
+  }, [dispatch,navigate]);
 
-  //Logout button event
+  // Logout button event
   const handleLogout = async () => {
+    setAnchorEl(null);
     sessionStorage.removeItem('user');
     dispatch(setAuthenticated(false));
-    await fetch("/api/logout", {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    return navigate('/login');
+    navigate(logout());
   };
 
   return (
@@ -72,16 +74,11 @@ export default function ButtonAppBar() {
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My dashboard</MenuItem>
+            <MenuItem component={Link} to={'/profile'} onClick={handleClose}> Profile </MenuItem>
+            <MenuItem component={Link} to={'/dashboard'} onClick={handleClose}> My dashboard </MenuItem>
             {isAuthenticated
               ? <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              : <MenuItem
-                component={Link}
-                to={'/login'}
-              >
-                Login
-              </MenuItem>
+              : <MenuItem component={Link} to={'/login'} onClick={handleClose}> Login </MenuItem>
             }
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}
@@ -91,26 +88,16 @@ export default function ButtonAppBar() {
             </Link>
           </Typography>
           {isAuthenticated
-            ? <Button color="inherit"
-              onClick={handleLogout}
-              sx={{ mr: 2 }}
-            >
-              Logout
-            </Button>
-            : <>
-              <Button color="inherit"
-                component={Link}
-                to={'/login'}
-                sx={{ mr: 2 }}
-              >
+            ? <Button color="inherit" onClick={handleLogout} sx={{ mr: 2 }}>Logout </Button>
+            :
+            <>
+              <Button color="inherit" component={Link} to={'/login'} sx={{ mr: 2 }}>
                 Login
               </Button>
-              <Button color="inherit"
-                component={Link}
-                to={'/signup'}
-              >
+              <Button color="inherit" component={Link} to={'/signup'} >
                 SignUp
-              </Button> </>
+              </Button>
+            </>
           }
         </Toolbar>
       </AppBar>
