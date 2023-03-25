@@ -34,9 +34,9 @@ export default function ButtonAppBar() {
 
   React.useEffect(() => {
     dispatch(setAuthenticated(Boolean(sessionStorage.getItem('user'))));
-    // Utilized to resolve a bug found in the Brave browser.
+    // Utilized to resolve a bug found in the Brave browser. the token jwt dont expires after the end of the session!
     if(!Boolean(sessionStorage.getItem('user'))){
-      navigate(logout());
+      logout();
     }
   }, [dispatch,navigate]);
 
@@ -45,7 +45,8 @@ export default function ButtonAppBar() {
     setAnchorEl(null);
     sessionStorage.removeItem('user');
     dispatch(setAuthenticated(false));
-    navigate(logout());
+    logout();
+    return navigate('/login');
   };
 
   return (

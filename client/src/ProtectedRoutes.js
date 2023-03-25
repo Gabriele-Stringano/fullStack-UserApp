@@ -17,7 +17,7 @@ const useAuthCheck = () => {
   if (isAuth === null) {
     // in attesa dei dati di autenticazione
     return null;
-  } else if (isAuth) {
+  } else if (isAuth & Boolean(sessionStorage.getItem('user'))) {
     // l'utente è autenticato, renderizza il contenuto protetto
     return <Outlet />;
   } else {

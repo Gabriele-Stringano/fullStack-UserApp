@@ -16,5 +16,4 @@ export const checkAuth = async () => {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
-      return '/login';
   }

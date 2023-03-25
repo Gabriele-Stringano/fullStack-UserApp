@@ -42,7 +42,8 @@ export function SignupPage() {
                 method: 'POST',
                 body: JSON.stringify({
                     email: formData.get('email'),
-                    password: formData.get('password')
+                    password: formData.get('password'),
+                    username: formData.get('username')
                 }),
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -90,10 +91,12 @@ export function SignupPage() {
                                 <TextField
                                     required
                                     fullWidth
-                                    id="Username"
+                                    id="username"
                                     label="Username"
-                                    name="Username"
+                                    name="username"
                                     autoComplete="family-name"
+                                    error={Boolean(errors.username)} // check for an error
+                                    helperText={errors.username} // show error message
                                 />
                             </Grid>
                             <Grid item xs={12}>

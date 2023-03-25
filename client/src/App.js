@@ -15,6 +15,7 @@ import ButtonAppBar from './components/layouts/ButtonAppBar';
 import { Footer } from './components/layouts/Footer';
 import { HomePage } from './components/HomePage';
 import DashBoard from './components/DashBoard';
+import { UserProfile } from './components/UserProfile';
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
                 <DashBoard />
               } />
               <Route exact path='/profile' element={
-                <div> my profile</div>
+                <UserProfile/>
               } />
             </Route>
           </Routes>

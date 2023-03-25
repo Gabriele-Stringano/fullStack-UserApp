@@ -45,10 +45,10 @@ const createToken = (id) => {
 };
 
 module.exports.signup_post = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, username } = req.body;
 
     try {
-        const user = await User.create({ email, password });
+        const user = await User.create({ email, password, username });
         //token creation
         const token = createToken(user._id);
         //cookie creation e sending to browser

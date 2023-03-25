@@ -1,0 +1,24 @@
+.container{
+    border-bottom: 200px;
+}
+
+.infoBlock{
+    background: white;
+    max-width: 600px;
+    width: 100%;
+    padding-bottom: 30px;
+    padding-left: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 30px;
+    border-radius: 10px;
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+}
+
+.field{
+    font-family:'Times New Roman', Times, serif;
+    font-size: x-large;
+}
+
