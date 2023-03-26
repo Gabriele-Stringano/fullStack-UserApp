@@ -1,6 +1,6 @@
 import React from 'react'
 import UserProfileCSS from './modules/UserProfile.module.css';
-import Button from '@mui/material/Button';
+import FormDialog from './layouts/FormDialog';
 
 
 export function UserProfile() {
@@ -8,16 +8,16 @@ export function UserProfile() {
         <div className={UserProfileCSS.container}>
             <div className={UserProfileCSS.infoBlock}>
                 <div className={UserProfileCSS.field}>
-                    <p> My nickname: {} </p>
-                    <Button variant="contained">Change nickname</Button>
+                    <p className={UserProfileCSS.text}>My nickname: { } </p>
+                    <FormDialog fieldName={'nickname'} />
                 </div>
                 <div className={UserProfileCSS.field}>
-                    <p>My email: {} </p>
-                    <Button variant="contained">Change email</Button>
+                    <p className={UserProfileCSS.text}>My email: { } </p>
+                    <FormDialog fieldName={'email'} />
                 </div>
                 <div className={UserProfileCSS.field}>
-                    <p>Other:</p>
-                    <Button variant="contained">Change password</Button>
+                    <p className={UserProfileCSS.text}>Other:</p>
+                    <FormDialog fieldName={'password'} />
                 </div>
             </div>
         </div>
