@@ -102,7 +102,6 @@ module.exports.logout_get = (req, res) => {
 }
 
 module.exports.update_user = async (req, res) => {
-    // joi! 
     const {error, value} = validateUserRules(req.body)
     if(error){
       console.log(error)
@@ -126,7 +125,7 @@ module.exports.update_user = async (req, res) => {
             {  _id: req.params.userId },
             { $set: updatedFields }
         );
-        res.status(200).json(updatedUser.modifiedCount);
+        res.status(200).json({message: 'User updated'});
     } catch (err) {
         res.status(404).json({ message: err });
     }
@@ -136,7 +135,6 @@ module.exports.userById = async (req, res) => {
     try {
       const user = await User.findById(req.params.userId);
       if (!user) throw "not found";
-      console.log(user);
       res.status(200).json(user);
     } catch (err) {
       res.status(404).json({ message: err });

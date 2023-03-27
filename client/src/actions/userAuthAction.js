@@ -1,5 +1,5 @@
-import {LOADING, SET_AUTHENTICATED} from "./types";
-//import axios from "axios";
+import {LOADING, SET_AUTHENTICATED, GET_USER_DATA} from "./types";
+import axios from "axios";
 
 export const setLoading = () => {
     return{
@@ -12,4 +12,13 @@ export const setAuthenticated= (value) =>{
         type:SET_AUTHENTICATED,
         payload: value
     }
+}
+
+export const fetchUserData = (userId) => dispatch => {
+    axios.get(`/api/${userId}`)
+        .then(response => dispatch({
+            type:GET_USER_DATA,
+            payload: response.data
+        }))
+        .catch(err => console.log(err))
 }

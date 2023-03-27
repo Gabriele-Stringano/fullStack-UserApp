@@ -8,10 +8,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { useState } from "react";
+import {useDispatch} from 'react-redux';
+import { fetchUserData } from '../../actions/userAuthAction';
 
 export default function FormDialog(props) {
     const [open, setOpen] = useState(false);
-    const [errors, setErrors] = useState({});
+    const [error, setError] = useState('');
+    const dispatch = useDispatch();
 
     const fieldName = props.fieldName;
 
@@ -21,10 +24,36 @@ export default function FormDialog(props) {
 
     const handleClose = () => {
         setOpen(false);
+        setError('');
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const data = {};
+
+        // Filter out form data entries with empty values
+        for (const [key, value] of formData.entries()) {
+            if (value.trim() !== "") {
+                data[key] = value;
+            }
+        }
+        try {
+            const res = await fetch(`/api/updateUser/${sessionStorage.getItem('user')}`, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const dataResult = await res.json();
+            if (dataResult.message === 'User updated') {
+                setOpen(false);
+                dispatch(fetchUserData(sessionStorage.getItem('user')))
+            } else {
+                setError(dataResult.message[0].message);
+            }
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
@@ -51,8 +80,8 @@ export default function FormDialog(props) {
                             name={fieldName}
                             autoComplete={fieldName}
                             type={fieldName}
-                            error={Boolean(errors[fieldName])} // check for an error
-                            helperText={errors[fieldName]} // show error message
+                            error={Boolean(error)} // check for an error
+                            helperText={error} // show error message
                         />
                     </DialogContent>
                     <DialogActions>
