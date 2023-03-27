@@ -1,5 +1,8 @@
 const User = require('../models/users');
 const jwt = require('jsonwebtoken');
+const Joi= require('joi')
+const {validateUserRules} = require ('../validators/user')
+const bcrypt = require('bcrypt');
 
 // handle errors
 const handleErrors = (err) => {
@@ -39,7 +42,7 @@ const maxAge = 3 * 24 * 60 * 60;
 //creating token JWT
 const createToken = (id) => {
     //id is the payload, the string is the secret
-    return jwt.sign({ id }, 'f_w3fwvapc jodf!cj_3sgg', {
+    return jwt.sign({ id }, process.env.HASHING_STRING, {
         expiresIn: maxAge
     })
 };
@@ -80,7 +83,7 @@ module.exports.requireAuth_get = async (req, res) => {
     const token = req.cookies.jwt;
     //check if the token was grabbed
     if (token) {
-        jwt.verify(token, 'f_w3fwvapc jodf!cj_3sgg', (err, decodedToken) => {
+        jwt.verify(token, process.env.HASHING_STRING, (err, decodedToken) => {
             if (err) {
                 res.status(400).json({ result });
             } else {
@@ -94,6 +97,48 @@ module.exports.requireAuth_get = async (req, res) => {
 };
 
 module.exports.logout_get = (req, res) => {
-    res.cookie('jwt', '', {maxAge: 1});
-    res.status(200).json({result : 'logged out'});
+    res.cookie('jwt', '', { maxAge: 1 });
+    res.status(200).json({ result: 'logged out' });
 }
+
+module.exports.update_user = async (req, res) => {
+    // joi! 
+    const {error, value} = validateUserRules(req.body)
+    if(error){
+      console.log(error)
+      return res.status(422).json({ message: error.details })
+     } 
+    try {
+        const updatedFields = {};
+        if (req.body.username) {
+            updatedFields.username = req.body.username;
+        }
+        if (req.body.email) {
+            updatedFields.email = req.body.email;
+        }
+        if (req.body.password) {
+            const salt = await bcrypt.genSalt();
+            let hashedPassword = req.body.password;
+            hashedPassword = await bcrypt.hash(req.body.password, salt);
+            updatedFields.password = hashedPassword;
+        }
+        const updatedUser = await User.updateOne(
+            {  _id: req.params.userId },
+            { $set: updatedFields }
+        );
+        res.status(200).json(updatedUser.modifiedCount);
+    } catch (err) {
+        res.status(404).json({ message: err });
+    }
+}
+
+module.exports.userById = async (req, res) => {
+    try {
+      const user = await User.findById(req.params.userId);
+      if (!user) throw "not found";
+      console.log(user);
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(404).json({ message: err });
+    }
+  }
