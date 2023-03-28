@@ -15,13 +15,13 @@ const useAuthCheck = () => {
   }, []);
 
   if (isAuth === null) {
-    // in attesa dei dati di autenticazione
+    // waiting for authentication data
     return null;
   } else if (isAuth & Boolean(sessionStorage.getItem('user'))) {
-    // l'utente è autenticato, renderizza il contenuto protetto
+    // the user is authenticated, render protected content
     return <Outlet />;
   } else {
-    // l'utente non è autenticato, reindirizza alla pagina di login
+    // the user is not authenticated, redirects to the login page
     return <Navigate to='/login' />;
   }
 };

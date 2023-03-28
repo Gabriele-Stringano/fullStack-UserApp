@@ -1,5 +1,5 @@
 import React from 'react'
-import MemoCardCSS from './modules/MemoCard.module.css';
+import MemoCardCSS from '../modules/MemoCard.module.css';
 
 export default function MemoCard(props) {
     return (

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import {useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import UserProfileCSS from './modules/UserProfile.module.css';
 import FormDialog from './layouts/FormDialog';
 import { fetchUserData } from '../actions/userAuthAction';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export function UserProfile() {
     const userData = useSelector((state) => state.userAuth.userData);
@@ -19,11 +20,11 @@ export function UserProfile() {
                 <div className={UserProfileCSS.container}>
                     <div className={UserProfileCSS.infoBlock}>
                         <div className={UserProfileCSS.field}>
-                            <p className={UserProfileCSS.text}>My nickname: {userData.username } </p>
+                            <p className={UserProfileCSS.text}>My nickname: {userData.username} </p>
                             <FormDialog fieldName={'username'} />
                         </div>
                         <div className={UserProfileCSS.field}>
-                            <p className={UserProfileCSS.text}>My email: {userData.email } </p>
+                            <p className={UserProfileCSS.text}>My email: {userData.email} </p>
                             <FormDialog fieldName={'email'} />
                         </div>
                         <div className={UserProfileCSS.field}>
@@ -32,7 +33,11 @@ export function UserProfile() {
                         </div>
                     </div>
                 </div>
-                : null
+                : <CircularProgress size={150} sx={{
+                    position: 'absolute',
+                    top: '30%',
+                    left: '46%',
+                }} />
             }
         </>
     )

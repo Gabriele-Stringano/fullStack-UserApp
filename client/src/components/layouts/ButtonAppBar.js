@@ -1,4 +1,5 @@
 import * as React from 'react';
+//@mui
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -6,12 +7,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import styled from '@mui/material/styles/styled';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link, useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
+//other
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { setAuthenticated } from '../../actions/userAuthAction';
 import {logout} from '../../utils/AuthUtils'
+
 
 export default function ButtonAppBar() {
 
@@ -49,6 +53,15 @@ export default function ButtonAppBar() {
     return navigate('/login');
   };
 
+  //personalized component
+  const StyledLink = styled(Link)({
+    textDecoration: 'none',
+    color: 'inherit',
+    '&:hover': {
+      color: 'orange'
+    },
+  });
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -84,9 +97,7 @@ export default function ButtonAppBar() {
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}
           >
-            <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
-              FullStack-UserApp
-            </Link>
+          <StyledLink to='/'>FullStack Authentication</StyledLink>
           </Typography>
           {isAuthenticated
             ? <Button color="inherit" onClick={handleLogout} sx={{ mr: 2 }}>Logout </Button>

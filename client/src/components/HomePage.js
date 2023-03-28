@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import MemoCard from "./MemoCard";
+import MemoCard from "./minorComponents/MemoCard";
 import HomeCSS from './modules/HomePage.module.css';
 
 export function HomePage() {
 
     const navigate = useNavigate();
 
-    const checkUser = () => {
+    const navigateToDashboard = () => {
         return navigate('/dashboard');
     }
 
@@ -26,7 +26,7 @@ export function HomePage() {
                     <MemoCard title={'DeadLine'} children={'10/08/2023'} />
                 </div>
             </div>
-            <button onClick={checkUser} className={HomeCSS.button}>
+            <button onClick={navigateToDashboard} className={HomeCSS.button}>
                 Enter your dashboard
             </button>
         </div>

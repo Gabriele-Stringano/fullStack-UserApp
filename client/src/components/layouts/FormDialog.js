@@ -8,8 +8,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { useState } from "react";
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchUserData } from '../../actions/userAuthAction';
+import { updateUser } from '../../utils/AuthUtils';
 
 export default function FormDialog(props) {
     const [open, setOpen] = useState(false);
@@ -39,20 +40,16 @@ export default function FormDialog(props) {
             }
         }
         try {
-            const res = await fetch(`/api/updateUser/${sessionStorage.getItem('user')}`, {
-                method: 'PUT',
-                body: JSON.stringify(data),
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const dataResult = await res.json();
-            if (dataResult.message === 'User updated') {
+            const dataResult = await updateUser(data);
+            console.log(dataResult);
+            if (dataResult.message === "User updated") {
                 setOpen(false);
-                dispatch(fetchUserData(sessionStorage.getItem('user')))
+                dispatch(fetchUserData(sessionStorage.getItem("user")));
             } else {
                 setError(dataResult.message[0].message);
             }
-        } catch (e) {
-            console.log(e);
+        } catch (err) {
+            console.log(err);
         }
     };
 
