@@ -57,7 +57,11 @@ As a Start2impact student, I developed this application to put my acquired knowl
 <!-- How it Works + ScreenShot -->
 
 ## ⚙️How it Works
+<b>Overview</b>: The application allows users to register and/or login to access private routes, modify their profile data, and view it.
 
+<b>Back-end</b>: RESTful APIs have been developed in node.js+express to allow for viewing, creating, and modifying user data stored in the MongoDB Cloud database. JWT tokens are used for authentication and bcrypt is used for password security. The joi library is used to verify the correctness of user input when modifying profiles. Helmet and Mongoose increase backend security.
+
+<b>Front-end</b>: Using React, Redux, Router, and @mui/material, the UI and UX are more than satisfactory, while maintaining clear code.For example, if a user enters an invalid value, they will be alerted as to what is not valid.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -71,9 +75,13 @@ To get a local copy up and running follow these simple example steps:
 <li> Select Download zipper </li>
 <li> Open the zipper and extract the folder </li>
 <li> Open a text editor and add the extracted folder </li>
-<li> Install the dependencies: npm install</li>
-<li> Run the Program: npm start</li>
+<li> Install the dependencies: npm install for bot Server and Client folders</li>
+<li> Connect your MongoDB database: Create, if don't exist, a .env file and then insert an enviroment variable named DB_URI with your MongoDB connection string
+<li> Run the Server: npm run dev port</li>
+<li> Run the Client: npm start</li>
 <li> The browser should open automatically</li>
+<li> localhost: 5'000 (server) 3'000 (client)</li>
+
 </ol>
 
 ### Prerequisites
@@ -105,6 +113,7 @@ List of resources I used:
 * [Visual-Studio](https://code.visualstudio.com/)
 * [ChatGPT](https://openai.com/)
 * [Best-README-Template](https://github.com/ferneynava/Best-README-Template)
+* [MuiComponents](https://mui.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -113,9 +122,7 @@ List of resources I used:
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[product-screenshot1]: public/imagesReadme/ScreenshotStore.png
-[product-screenshot2]: public/imagesReadme/ScreenshotAction.png
-[product-screenshot3]: public/imagesReadme/ScreenshotRouting.png
+
 [Javascript.js]: https://img.shields.io/static/v1?message=Javascript&logo=JavaScript&labelColor=5c5c5c&color=efd81d&logoColor=white&label=%20&style=FOR-THE-BADGE
 [Javascript-url]: https://en.wikipedia.org/wiki/JavaScript
 [NodeJs.js]: https://img.shields.io/badge/Js-Node.js-brightgreen
