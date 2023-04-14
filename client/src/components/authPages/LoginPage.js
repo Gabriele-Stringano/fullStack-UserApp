@@ -117,11 +117,6 @@ export function LoginPage() {
                             Sign In
                         </LoadingButton>
                         <Grid container>
-                            <Grid item xs>
-                                <Link>
-                                    Forgot password?
-                                </Link>
-                            </Grid>
                             <Grid item>
                                 <Link to="/signup">
                                     {"Don't have an account? Sign Up"}

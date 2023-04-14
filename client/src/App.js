@@ -1,8 +1,9 @@
 import './App.css';
 
 //added react router for more pages
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import ProtectedRoutes from './ProtectedRoutes';
+import { useLocation } from 'react-router-dom';
 
 //import the store REDUX
 import { Provider } from 'react-redux';
@@ -18,34 +19,39 @@ import DashBoard from './components/DashBoard';
 import { UserProfile } from './components/UserProfile';
 
 function App() {
+
+  // check if the current route is the SignupPage/LoginPage
+  const location = useLocation();
+  const hideFooter = location.pathname === '/signup' || location.pathname === '/login';
+
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <div className="App">
-          <ButtonAppBar />
-          <Routes className={'page'}>
-            <Route exact path='/' element={
-              <HomePage />
-            } />
+      <div className="App">
+        <ButtonAppBar />
+        <Routes className={'page'}>
+          <Route exact path='/' element={
+            <HomePage />
+          } />
 
-            <Route exact path='/login' element={
-              <LoginPage />
+          <Route exact path='/login' element={
+            <LoginPage />
+          } />
+          <Route exact path='/signup' element={
+            <SignupPage />
+          } />
+          <Route element={<ProtectedRoutes />}>
+            <Route exact path='/dashboard' element={
+              <DashBoard />
             } />
-            <Route exact path='/signup' element={
-              <SignupPage />
+            <Route exact path='/profile' element={
+              <UserProfile />
             } />
-            <Route element={<ProtectedRoutes />}>
-              <Route exact path='/dashboard' element={
-                <DashBoard />
-              } />
-              <Route exact path='/profile' element={
-                <UserProfile/>
-              } />
-            </Route>
-          </Routes>
-          <Footer />
-        </div>
-      </BrowserRouter>
+          </Route>
+        </Routes>
+        {hideFooter
+          ? <></>
+          : <Footer />}
+      </div>
     </Provider>
   );
 }

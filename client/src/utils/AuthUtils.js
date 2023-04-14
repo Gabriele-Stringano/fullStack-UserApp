@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const checkAuth = async () => {
   try {
     const res = await fetch("/api/checkAuth", {
