@@ -10,7 +10,7 @@ const userSchema = new Schema({
         required: [true, 'Please enter an email'],
         unique: true, //throw error if already exist in DB
         lowercase: true,
-        validate: [isEmail, 'Pleae enter a valid email']
+        validate: [isEmail, 'Please enter a valid email']
     },
     password: {
         type: String,
@@ -38,6 +38,7 @@ userSchema.pre('save', async function (next) {
 
 // static method to login user
 userSchema.statics.login = async function(email, password){
+    // Find an user in the DB
     const user= await this.findOne({email});
     if(user){
         const auth = await bcrypt.compare(password, user.password);

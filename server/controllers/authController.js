@@ -47,6 +47,9 @@ const createToken = (id) => {
     })
 };
 
+const expirationDate = new Date();
+expirationDate.setDate(expirationDate.getDate() + 3);
+
 module.exports.signup_post = async (req, res) => {
     const { email, password, username } = req.body;
 
@@ -55,7 +58,7 @@ module.exports.signup_post = async (req, res) => {
         //token creation
         const token = createToken(user._id);
         //cookie creation e sending to browser
-        res.cookie('jwt', token, { httpOnly: true });
+        res.cookie('jwt', token, {expires: expirationDate ,httpOnly: true });
         res.status(201).json({ user: user._id });
     } catch (err) {
         const errors = handleErrors(err);
