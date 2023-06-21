@@ -1,6 +1,6 @@
 export const checkAuth = async () => {
   try {
-    const res = await fetch("/api/checkAuth", {
+    const res = await fetch(`${process.env.REACT_APP_PATH}/api/checkAuth`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -12,7 +12,7 @@ export const checkAuth = async () => {
 };
 
 export const logout = async () => {
-  await fetch("/api/logout", {
+  await fetch(`${process.env.REACT_APP_PATH}/api/logout`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   });
@@ -20,7 +20,7 @@ export const logout = async () => {
 
 export const updateUser = async (data) => {
   try {
-    const res = await fetch(`/api/updateUser/${sessionStorage.getItem('user')}`, {
+    const res = await fetch(`${process.env.REACT_APP_PATH}/api/updateUser/${sessionStorage.getItem('user')}`, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' }

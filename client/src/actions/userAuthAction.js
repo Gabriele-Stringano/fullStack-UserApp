@@ -15,7 +15,7 @@ export const setAuthenticated= (value) =>{
 }
 
 export const fetchUserData = (userId) => dispatch => {
-    axios.get(`/api/${userId}`)
+    axios.get(`${process.env.REACT_APP_PATH}/api/${userId}`)
         .then(response => dispatch({
             type:GET_USER_DATA,
             payload: response.data

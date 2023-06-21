@@ -29,7 +29,7 @@ export function LoginPage() {
         setErrors({});
         const formData = new FormData(event.currentTarget);
         try {
-            const res = await fetch("/api/login", {
+            const res = await fetch(`${process.env.REACT_APP_PATH}/api/login`, {
                 method: 'POST',
                 body: JSON.stringify({
                     email: formData.get('email'),
