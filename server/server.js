@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const connectionDB = require("./database");
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
+const cors = require('cors')
 
 const app = express()
 
@@ -15,6 +16,13 @@ app.use(cookieParser());
 
 // Helmet helps you secure your Express apps by setting various HTTP headers
 app.use(helmet());
+
+app.use(
+    cors({
+        origin: "https://autentication.gabrielestringano.com/",
+        credentials: true
+    })
+)
 
 // Mongoose will wrap any objects in the query filter with MongoDB's $eq query operator, which blocks query selector injections
 mongoose.set('sanitizeFilter', true);
