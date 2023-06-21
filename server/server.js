@@ -19,8 +19,8 @@ app.use(helmet());
 
 app.use(
     cors({
-        origin: "https://autentication.gabrielestringano.com/",
-        credentials: true
+        origin: "https://autentication.gabrielestringano.com",
+        credentials: true,
     })
 )
 
