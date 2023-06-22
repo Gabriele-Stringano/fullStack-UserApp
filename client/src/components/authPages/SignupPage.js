@@ -45,7 +45,8 @@ export function SignupPage() {
                     password: formData.get('password'),
                     username: formData.get('username')
                 }),
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
             });
             const data = await res.json();
             checkResult(data);

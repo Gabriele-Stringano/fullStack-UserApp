@@ -55,7 +55,7 @@ module.exports.signup_post = async (req, res) => {
         //token creation
         const token = createToken(user._id);
         //cookie creation e sending to browser
-        res.cookie('jwt', token, {httpOnly: true });
+        res.cookie('jwt', token, { httpOnly: true, sameSite: 'none', secure: true });
         res.status(201).json({ user: user._id });
     } catch (err) {
         const errors = handleErrors(err);
@@ -69,7 +69,7 @@ module.exports.login_post = async (req, res) => {
         //User.login is a static method created in models/users.js
         const user = await User.login(email, password)
         const token = createToken(user._id);
-        res.cookie('jwt', token, { httpOnly: true });
+        res.cookie('jwt', token, { httpOnly: true, sameSite: 'none', secure: true });
         res.status(200).json({ user: user._id });
     } catch (err) {
         const errors = handleErrors(err);
@@ -81,6 +81,7 @@ module.exports.requireAuth_get = async (req, res) => {
     let result = { authorised: false };
     //grab the token form the browser (client)
     const token = req.cookies.jwt;
+    console.log(token);
     //check if the token was grabbed
     if (token) {
         jwt.verify(token, process.env.HASHING_STRING, (err, decodedToken) => {
@@ -97,7 +98,7 @@ module.exports.requireAuth_get = async (req, res) => {
 };
 
 module.exports.logout_get = (req, res) => {
-    res.cookie('jwt', '', { maxAge: 1 });
+    res.cookie('jwt', '', { maxAge: 1, httpOnly: true, sameSite: 'none', secure: true });
     res.status(200).json({ result: 'logged out' });
 }
 

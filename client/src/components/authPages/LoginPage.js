@@ -35,7 +35,8 @@ export function LoginPage() {
                     email: formData.get('email'),
                     password: formData.get('password')
                 }),
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
             });
             const data = await res.json();
             checkResult(data);

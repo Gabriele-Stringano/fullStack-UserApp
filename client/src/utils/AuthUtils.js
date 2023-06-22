@@ -2,7 +2,8 @@ export const checkAuth = async () => {
   try {
     const res = await fetch(`${process.env.REACT_APP_PATH}/api/checkAuth`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
     });
     const data = await res.json();
     return data.result.authorised;
@@ -14,7 +15,8 @@ export const checkAuth = async () => {
 export const logout = async () => {
   await fetch(`${process.env.REACT_APP_PATH}/api/logout`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include'
   });
 }
 
