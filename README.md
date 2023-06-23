@@ -48,6 +48,7 @@ As a Start2impact student, I developed this application to put my acquired knowl
 * [![NodeJs][NodeJs.js]][NodeJs-url]
 * [![React][React.js]][React-url]
 * [![Redux][Redux.js]][Redux-url]
+* [![Netlify Status](https://api.netlify.com/api/v1/badges/401f510f-de99-424c-afe4-fec6c58fc970/deploy-status)](https://app.netlify.com/sites/autenticatio-app-front/deploys)
 * <a href="https://www.mongodb.com/">External Service-> MongoDb Cloud</a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
