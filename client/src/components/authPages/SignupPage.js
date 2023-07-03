@@ -38,7 +38,7 @@ export function SignupPage() {
         setErrors({});
         const formData = new FormData(event.currentTarget);
         try {
-            const res = await fetch(`${process.env.REACT_APP_PATH}/api/signup`, {
+            const res = await fetch(`${process.env.REACT_APP_PATH}/api/auth/register`, {
                 method: 'POST',
                 body: JSON.stringify({
                     email: formData.get('email'),

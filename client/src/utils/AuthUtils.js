@@ -13,7 +13,7 @@ export const checkAuth = async () => {
 };
 
 export const logout = async () => {
-  await fetch(`${process.env.REACT_APP_PATH}/api/logout`, {
+  await fetch(`${process.env.REACT_APP_PATH}/api/auth/logout`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include'
@@ -22,7 +22,7 @@ export const logout = async () => {
 
 export const updateUser = async (data) => {
   try {
-    const res = await fetch(`${process.env.REACT_APP_PATH}/api/updateUser/${sessionStorage.getItem('user')}`, {
+    const res = await fetch(`${process.env.REACT_APP_PATH}/api/users/updateUser/${sessionStorage.getItem('user')}`, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' }
