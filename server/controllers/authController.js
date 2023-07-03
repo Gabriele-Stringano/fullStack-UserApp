@@ -51,7 +51,10 @@ module.exports.signup_post = async (req, res) => {
     const { email, password, username } = req.body;
 
     try {
-        const user = await User.create({ email, password, username });
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const user = await User.create({ email, password: hashedPassword, username });
         //token creation
         const token = createToken(user._id);
         //cookie creation e sending to browser
@@ -65,12 +68,24 @@ module.exports.signup_post = async (req, res) => {
 
 module.exports.login_post = async (req, res) => {
     const { email, password } = req.body;
+
     try {
-        //User.login is a static method created in models/users.js
-        const user = await User.login(email, password)
-        const token = createToken(user._id);
-        res.cookie('jwt', token, { httpOnly: true, sameSite: 'none', secure: true });
-        res.status(200).json({ user: user._id });
+        const user = await User.findOne({ email });
+
+        if (user) {
+            const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+            if (isPasswordCorrect) {
+                const token = createToken(user._id);
+
+                res.cookie('jwt', token, { httpOnly: true, sameSite: 'none', secure: true });
+                res.status(200).json({ user: user._id });
+            } else {
+                throw new Error('incorrect password');
+            }
+        } else {
+            throw new Error('incorrect email');
+        }
     } catch (err) {
         const errors = handleErrors(err);
         res.status(400).json({ errors });

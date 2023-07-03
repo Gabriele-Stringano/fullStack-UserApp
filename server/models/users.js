@@ -25,30 +25,5 @@ const userSchema = new Schema({
     },
 });
 
-//Mongoose Hoonks post('save', function(doc, next)) -> fire a function after user saved to DB
-//Mongoose Hoonks pre -> fire a function before user saved to DB
-userSchema.pre('save', async function (next) {
-    const salt = await bcrypt.genSalt();
-    //this refers to the instance of the user we're trying to create
-    //!!!instance is one particular copy of a thing!!!
-    this.password = await bcrypt.hash(this.password, salt);
-    //go to the next middleware, "If you don't use it, the code will crash."
-    next();
-})
-
-// static method to login user
-userSchema.statics.login = async function(email, password){
-    // Find an user in the DB
-    const user= await this.findOne({email});
-    if(user){
-        const auth = await bcrypt.compare(password, user.password);
-        if(auth){
-            return user;
-        }
-        throw Error('incorrect password')
-    }
-    throw Error('incorrect email')
-}
-
 // the first parameter of the model must be the singular of the collection name
 module.exports = mongoose.model("user", userSchema);
