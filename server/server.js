@@ -38,9 +38,9 @@ app.get("/", (req, res) => {
         .json({ message: "Home" });
 });
 
-app.use('/api', authRoutes);
+app.use('/api/auth', authRoutes);
 
-app.use('/api', usersRoutes, (req, res, next) => {
+app.use('/api/users', usersRoutes, (req, res, next) => {
     const token = req.cookies.jwt;
   
     if (!token) {
