@@ -30,6 +30,22 @@ app.use(
 mongoose.set('sanitizeFilter', true);
 mongoose.trusted
 
+const getIdFromJwt = (req, res, next) => {
+  const token = req.cookies.jwt;
+
+    if (!token) {
+        return res.status(400).json({ message: 'Token not found' });
+    }
+
+    jwt.verify(token, process.env.HASHING_STRING, (err, decodedToken) => {
+      if (err) {
+        return res.status(400).json({ message: err });
+      }
+
+      req.user = decodedToken.id;
+      next();
+    });
+}
 
 // Routes
 app.get("/", (req, res) => {
@@ -40,22 +56,7 @@ app.get("/", (req, res) => {
 
 app.use('/api/auth', authRoutes);
 
-app.use('/api/users', usersRoutes, (req, res, next) => {
-    const token = req.cookies.jwt;
-  
-    if (!token) {
-        return res.status(400).json({ message: 'Token not found' });
-    }
-  
-    jwt.verify(token, process.env.HASHING_STRING, (err, decodedToken) => {
-      if (err) {
-        return res.status(400).json({ message: err });
-      }
-  
-      req.user = decodedToken.id;
-      next();
-    });
-  });
+app.use('/api/users', getIdFromJwt, usersRoutes);
 
 // Error 404
 app.get("*", (req, res) => {
