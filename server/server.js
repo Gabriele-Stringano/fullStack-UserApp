@@ -4,7 +4,9 @@ const helmet = require("helmet");
 const connectionDB = require("./database");
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
+const usersRoutes = require('./routes/usersRoutes');
 const cors = require('cors')
+const jwt = require('jsonwebtoken');
 
 const app = express()
 
@@ -38,6 +40,22 @@ app.get("/", (req, res) => {
 
 app.use('/api', authRoutes);
 
+app.use('/api', usersRoutes, (req, res, next) => {
+    const token = req.cookies.jwt;
+  
+    if (!token) {
+        return res.status(400).json({ message: 'Token not found' });
+    }
+  
+    jwt.verify(token, process.env.HASHING_STRING, (err, decodedToken) => {
+      if (err) {
+        return res.status(400).json({ message: err });
+      }
+  
+      req.user = decodedToken.id;
+      next();
+    });
+  });
 
 // Error 404
 app.get("*", (req, res) => {
