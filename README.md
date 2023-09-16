@@ -2,10 +2,9 @@
 <br />
 <div align="center">
 
-  <h3 align="center">FullStack-UserApp by Gabriele Stringano</h3>
+  <h3 align="center">FullStack-User Authentication App by Gabriele Stringano</h3>
 
   <p align="center">
-  WORK IN PROGRESS...
     <br />
   </p>
 </div>
